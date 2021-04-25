@@ -11,8 +11,12 @@ module donut(wr = 13.5,td = 5){
         translate([wr - td/2, 0])circle(d=td);
     }
 }
+
 //shaft
-%translate([0,0,-3.1])cylinder(d=8,h=27);
+union(){
+    translate([0,0,-3.1])cylinder(d=8,h=27);
+    translate([0,4,9])cube([2,2,15], center=true);
+}
 
 //cam
 %difference(){
@@ -22,20 +26,24 @@ module donut(wr = 13.5,td = 5){
     translate([0,3,12])donut(wr=13);
     translate([0,13.9,2.9])cylinder(d=4.75,h=3);
     translate([0,13.9,12.1])cylinder(d=4.75,h=3);
+    translate([0,4,9])cube([2,2,15], center=true);
 }
     
 
 //base
 union(){
     translate([0,0,9])difference(){
-        cylinder(d=75,h=24, center=true);
+        translate([0,0,-0.5])cylinder(d=75.3,h=26, center=true);
         cylinder(d=66+tol,h=36.01, center=true);
         translate([0,0,9.5])donut(wr=37);
-        translate([0,33,9])cylinder(d=4.75,h=3.5);
+        translate([0,33,9])cylinder(d=4.75,h=3.6);
+    }
+    for(i=[0:90:360]){
+        rotate([0,0,i])translate([0,38.5,3])cube([2,2,15], center=true);
     }
     difference(){
-        color("black")cylinder(d=67,h=6, center=true);
-        cylinder(d=22+tol,h=6.1, center=true);
+        translate([0,0,-1])cylinder(d=67,h=7, center=true);
+        translate([0,0,-1])cylinder(d=22+tol,h=7.1, center=true);
         
     }
 //lobes
@@ -44,7 +52,7 @@ union(){
     }
 }
 
-union(){
+color("lightblue")union(){
 //1st disc
 rotate([0,0,$t/11*360])translate([sin(360*$t)*3,cos(360*$t)*3,6.01])
     difference(){
@@ -82,12 +90,12 @@ rotate([0,0,$t/11*360])translate([sin(360*$t)*3,cos(360*$t)*3,12.01])
 %rotate([0,0,$t/100*-360])
 union(){
     translate([0,0,18.5])difference(){
-        cylinder(d=65.99,h=6, center=true);
-        cylinder(d=22+tol,h=6.01, center=true);
+        cylinder(d=65.99,h=7, center=true);
+        cylinder(d=22+tol,h=7.01, center=true);
         donut(wr=37);
-        rotate([0,0,10])translate([0,33,-0.4])cylinder(d=4.75,h=3.5);
+        rotate([0,0,10])translate([0,33,1])cylinder(d=4.75,h=3.5);
         for(i=[0:72:360]){
-            rotate([0,0,i])translate([0,28,0])scale([1,1,1])cylinder(d=5+tol,h=12.01, center=true);
+            rotate([0,0,i])translate([0,28,0])cylinder(d=4+tol,h=12.01, center=true);
         }
     }
 //lobes
@@ -98,7 +106,7 @@ union(){
         }
     }
     for(i=[0:72:360]){
-            rotate([0,0,i])translate([0,28,15])scale([1,1,1])cylinder(d=5+tol,h=12.01, center=true);
+            rotate([0,0,i])translate([0,28,15])cylinder(d=4+tol,h=12.01, center=true);
         }
     translate([0,0,18.5])donut(wr=37);
     }
