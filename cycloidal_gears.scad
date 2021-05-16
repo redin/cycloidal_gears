@@ -7,34 +7,36 @@ hd=3;
 hoff=22;
 
 module donut(wr = 13.5,td = 5){
+    $fa = 0.1;
+    $fs = 0.4;
     rotate_extrude(angle=360) {
         translate([wr - td/2, 0])circle(d=td);
     }
 }
 
 //shaft
-union(){
+%union(){
     translate([0,0,-3.1])cylinder(d=8,h=27);
     translate([0,4,9])cube([2,2,15], center=true);
 }
 
 //cam
-%difference(){
-    translate([0,3,8.99])cylinder(d=22+tol,h=12.1, center=true);
+rotate([0,0,-360*$t])difference(){
+    translate([0,3,8.99])cylinder(d=22-tol,h=15, center=true);
     translate([0,0,-3.1])cylinder(d=8,h=27);
     translate([0,3,6])donut(wr=13);
     translate([0,3,12])donut(wr=13);
-    translate([0,13.9,2.9])cylinder(d=4.75,h=3);
-    translate([0,13.9,12.1])cylinder(d=4.75,h=3);
-    translate([0,4,9])cube([2,2,15], center=true);
+    translate([0,13.9,1])cylinder(d=4.75,h=4);
+    translate([0,13.9,13.1])cylinder(d=4.75,h=4);
+    translate([0,4,9])cube([2,2,16], center=true);
 }
     
 
 //base
-union(){
+%translate([0,0,-1])union(){
     translate([0,0,9])difference(){
         translate([0,0,-0.5])cylinder(d=75.3,h=26, center=true);
-        cylinder(d=66+tol,h=36.01, center=true);
+        cylinder(d=66+tol,h=38.01, center=true);
         translate([0,0,9.5])donut(wr=37);
         translate([0,33,9])cylinder(d=4.75,h=3.6);
     }
@@ -52,9 +54,10 @@ union(){
     }
 }
 
-color("lightblue")union(){
+color("lightblue")
+rotate([0,0,($t/11)*360])translate([sin(360*$t)*3,cos(360*$t)*3,0])union(){
 //1st disc
-rotate([0,0,$t/11*360])translate([sin(360*$t)*3,cos(360*$t)*3,6.01])
+translate([0,0,6.01])
     difference(){
     cylinder(d=60,h=6, center=true);
     cylinder(d=22+tol,h=6.1, center=true);
@@ -70,7 +73,7 @@ rotate([0,0,$t/11*360])translate([sin(360*$t)*3,cos(360*$t)*3,6.01])
 }
 
 ////2nd disc
-rotate([0,0,$t/11*360])translate([sin(360*$t)*3,cos(360*$t)*3,12.01]) 
+translate([0,0,12.01]) 
     difference(){
     cylinder(d=50,h=6, center=true);
     cylinder(d=22+tol,h=6.01, center=true);
